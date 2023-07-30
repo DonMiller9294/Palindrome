@@ -1,0 +1,45 @@
+import PySimpleGUI as sg
+
+# function will check if a word is a palindrome
+def is_palindrome(word):
+    word = word.replace("", "").lower()
+    return word == word[::-1]
+
+# Set the theme for the Gui
+sg.theme("LightGrey1")
+
+# Define the lay of the GUI
+layout = [
+    [sg.Text("Enter a word or phrase: "), sg.InputText(key="input_word")],
+    [sg.Button("Check"), sg.Button("Exit")],
+    [sg.Text(size=(30, 2), key="output_message")]
+]
+
+# Create the PySimpleGUI window with the defined layout
+window = sg.Window("Palidrome Checker", layout)
+
+# This will start the event loop to handle user interactions
+while True:
+    event, values = window.read()
+
+    # Exit the program if the window is closed or "Exit" button is clicked
+    if event == sg.WIN_CLOSED or event == "Exit":
+        break
+
+    # Get the user input from the input field
+    input_word = values["input_word"]
+
+    if input_word:
+        # This will call the is_palindrome function to check if input is a plaindrome
+        if is_palindrome(input_word):
+            # Update the output message if the input is a is palindrome
+            window["output_message"].update(f'"{input_word}" is a palindrome.')
+        else:
+            # update the output message if the input is not a palindrome
+            window["output_message"].update(f'"{input_word}" is not a palindrome.')
+    else:
+        # show an error popup if the user input is empty
+        sg.popup_error("Please enter a word or phrase.")
+
+# Close the PySimpleGUI window when the event loop ends
+window.close()
